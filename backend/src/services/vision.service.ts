@@ -1,5 +1,6 @@
 import type { Tag } from '../types/tags';
 import vision from '@google-cloud/vision';
+import type { ImageAnnotatorClient } from '@google-cloud/vision'; // ← importa el TIPO
 
 export interface IVisionService {
   getTagsFromImage(buffer: Buffer): Promise<Tag[]>;
@@ -15,11 +16,10 @@ export class MockVisionService implements IVisionService {
 }
 
 export class GoogleVisionService implements IVisionService {
-  private client: vision.ImageAnnotatorClient;
+  private client: ImageAnnotatorClient; // ← usa el tipo importado
 
   constructor() {
-    // The client automatically reads GOOGLE_APPLICATION_CREDENTIALS
-    this.client = new vision.ImageAnnotatorClient();
+    this.client = new vision.ImageAnnotatorClient(); // ← usa el valor default
   }
 
   async getTagsFromImage(buffer: Buffer): Promise<Tag[]> {
