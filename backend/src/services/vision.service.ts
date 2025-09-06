@@ -16,10 +16,10 @@ export class MockVisionService implements IVisionService {
 }
 
 export class GoogleVisionService implements IVisionService {
-  private client: ImageAnnotatorClient; // usa el tipo importado
+  private client: ImageAnnotatorClient; 
 
   constructor() {
-    this.client = new vision.ImageAnnotatorClient(); // usa el valor default
+    this.client = new vision.ImageAnnotatorClient(); 
   }
 
   async getTagsFromImage(buffer: Buffer): Promise<Tag[]> {
