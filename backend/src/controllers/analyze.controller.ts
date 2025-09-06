@@ -7,17 +7,16 @@ export const makeAnalyzeController = (vision: IVisionService) => async (
   next: NextFunction
 ) => {
   try {
-    // trabajo con base64 oara simplificar
-    const base64 = req.body?.imageBase64;
-    if (!base64) {
+    const file = (req as any).file as Express.Multer.File | undefined;
+    if (!file) {
       const err: any = new Error('No image provided');
       err.status = 400; err.publicMessage = 'No image provided';
       throw err;
     }
-    const buffer = Buffer.from(base64, 'base64');
-    const tags = await vision.getTagsFromImage(buffer);
+    const tags = await vision.getTagsFromImage(file.buffer);
     res.json({ tags });
   } catch (e) {
     next(e);
   }
 };
+
