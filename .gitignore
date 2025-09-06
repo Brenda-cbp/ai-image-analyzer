@@ -9,3 +9,8 @@ backend/.env
 
 # Editor
 .vscode
+
+# Keys
+keys/
+*.json
+!package.json
