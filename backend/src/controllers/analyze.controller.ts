@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import type { IVisionService } from '../services/vision.service';
+import type { IMimeValidator } from '../services/mime.service';
 
-export const makeAnalyzeController = (vision: IVisionService) => async (
+export const makeAnalyzeController = (vision: IVisionService, mime: IMimeValidator) => async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,11 +15,8 @@ export const makeAnalyzeController = (vision: IVisionService) => async (
       throw err;
     }
 
-    // MIME validation
-    const { fileTypeFromBuffer } = await import('file-type');
-    const type = await fileTypeFromBuffer(file.buffer);
-    const allowed = ['image/png', 'image/jpeg', 'image/webp','image/jpg' ];
-    if (!type || !allowed.includes(type.mime)) {
+    const ok = await mime.isAllowed(file.buffer);
+    if (!ok) {
       const err: any = new Error('Only image files are allowed');
       err.status = 400; err.publicMessage = 'Only image files are allowed';
       throw err;
