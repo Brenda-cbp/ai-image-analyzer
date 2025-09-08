@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import type { IVisionService } from '../services/vision.service';
+import { fileTypeFromBuffer } from 'file-type';
 
 export const makeAnalyzeController = (vision: IVisionService) => async (
   req: Request,
@@ -13,10 +14,19 @@ export const makeAnalyzeController = (vision: IVisionService) => async (
       err.status = 400; err.publicMessage = 'No image provided';
       throw err;
     }
+
+    // MIME validation
+    const type = await fileTypeFromBuffer(file.buffer);
+    const allowed = ['image/png', 'image/jpeg', 'image/webp','image/jpg' ];
+    if (!type || !allowed.includes(type.mime)) {
+      const err: any = new Error('Only image files are allowed');
+      err.status = 400; err.publicMessage = 'Only image files are allowed';
+      throw err;
+    }
+
     const tags = await vision.getTagsFromImage(file.buffer);
     res.json({ tags });
   } catch (e) {
     next(e);
   }
 };
-
