@@ -24,3 +24,66 @@ To enable Google Vision:
    ```json
    { "imageBase64": "<base64 of an image>" }
    ```
+
+## Frontend (React + Vite + TypeScript)
+
+### 1. Environment setup
+Copy the example env file and set your backend API URL:
+
+```bash
+cp frontend/.env.example frontend/.env
+````
+
+Edit `.env` and set:
+
+```
+VITE_API_URL=http://localhost:4000
+```
+
+(or your deployed backend URL)
+
+---
+
+### 2. Development
+
+Run the frontend in dev mode:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The app will open at: [http://localhost:5173](http://localhost:5173)
+
+---
+
+### 3. Type checking
+
+To run full TypeScript type checks (beyond what Vite/esbuild does):
+
+```bash
+npm run type-check
+```
+
+(Shortcut for `tsc --noEmit`)
+
+---
+
+### 4. Build for production
+
+To generate an optimized build:
+
+```bash
+npm run build
+```
+
+Preview the built app:
+
+```bash
+npm run preview
+```
+
+This will serve the production build at [http://localhost:4173](http://localhost:4173)
+
+```
