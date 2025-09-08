@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import type { IVisionService } from '../services/vision.service';
-import { fileTypeFromBuffer } from 'file-type';
 
 export const makeAnalyzeController = (vision: IVisionService) => async (
   req: Request,
@@ -16,6 +15,7 @@ export const makeAnalyzeController = (vision: IVisionService) => async (
     }
 
     // MIME validation
+    const { fileTypeFromBuffer } = await import('file-type');
     const type = await fileTypeFromBuffer(file.buffer);
     const allowed = ['image/png', 'image/jpeg', 'image/webp','image/jpg' ];
     if (!type || !allowed.includes(type.mime)) {
