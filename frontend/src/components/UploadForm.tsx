@@ -28,8 +28,8 @@ export default function UploadForm() {
     try {
       const res = await analyzeImage(file);
       setTags(res.tags);
-    } catch (e: any) {
-      setError(e?.message ?? 'Unexpected error');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Unexpected error');
     } finally {
       setLoading(false);
     }
@@ -47,20 +47,22 @@ export default function UploadForm() {
   return (
     <div>
       <label htmlFor="image">Select an image</label>
-      <input
-        ref={inputRef}
-        id="image"
-        type="file"
-        accept="image/*"
-        onChange={onChange}
-      />
+      <input ref={inputRef} id="image" type="file" accept="image/*" onChange={onChange} />
       <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-        <button onClick={onAnalyze} disabled={!file || loading}>Analyze</button>
-        <button onClick={clearFile} disabled={!file && !preview}>Clear</button>
+        <button onClick={onAnalyze} disabled={!file || loading}>
+          Analyze
+        </button>
+        <button onClick={clearFile} disabled={!file && !preview}>
+          Clear
+        </button>
       </div>
 
       {loading && <Spinner />}
-      {error && <p aria-live="assertive" style={{ color: 'crimson' }}>{error}</p>}
+      {error && (
+        <p aria-live="assertive" style={{ color: 'crimson' }}>
+          {error}
+        </p>
+      )}
       {preview && (
         <figure style={{ margin: '1rem 0' }}>
           <img src={preview} alt="preview" style={{ maxWidth: 320, height: 'auto' }} />

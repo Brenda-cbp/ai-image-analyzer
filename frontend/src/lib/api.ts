@@ -11,7 +11,10 @@ export async function analyzeImage(file: File): Promise<AnalyzeResponse> {
     try {
       const data = await res.json();
       msg = data?.error?.message ?? msg;
-    } catch {}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_e) {
+      // ignore JSON parse errors (non-JSON body)
+    }
     throw new Error(msg);
   }
   return res.json();
