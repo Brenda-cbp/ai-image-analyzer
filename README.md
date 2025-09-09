@@ -86,4 +86,5 @@ npm run preview
 
 This will serve the production build at [http://localhost:4173](http://localhost:4173)
 
-```
+### Postman
+Import `postman/ai-image-analyzer.postman_collection.json` and set `baseUrl` to your backend (default: http://localhost:4000). Use the "success" request and attach an image file.
