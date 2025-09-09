@@ -1,8 +1,9 @@
+import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
-import cors from 'cors';
-import analyzeRouter from './routes/analyze.route';
+
 import { errorHandler } from './middlewares/error.middleware';
+import analyzeRouter from './routes/analyze.route';
 
 export const createApp = () => {
   const app = express();

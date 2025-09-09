@@ -10,13 +10,15 @@ jest.mock('@google-cloud/vision', () => {
     {
       labelAnnotations: [
         { description: 'cat', score: 0.98 },
-        { description: 'pet', score: 0.88 }
-      ]
-    }
+        { description: 'pet', score: 0.88 },
+      ],
+    },
   ]);
   return {
     __esModule: true,
-    default: { ImageAnnotatorClient: jest.fn().mockImplementation(() => ({ labelDetection: mockFn })) }
+    default: {
+      ImageAnnotatorClient: jest.fn().mockImplementation(() => ({ labelDetection: mockFn })),
+    },
   };
 });
 
@@ -26,7 +28,7 @@ describe('GoogleVisionService', () => {
     const tags = await svc.getTagsFromImage(Buffer.from([0x00]));
     expect(tags).toEqual([
       { label: 'cat', confidence: 0.98 },
-      { label: 'pet', confidence: 0.88 }
+      { label: 'pet', confidence: 0.88 },
     ]);
   });
 });

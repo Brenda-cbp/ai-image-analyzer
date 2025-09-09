@@ -12,15 +12,13 @@ describe('POST /api/analyze (multipart)', () => {
   });
 
   it('returns 400 when no file provided', async () => {
-    const res = await request(app)
-      .post('/api/analyze')
-      .field('dummy', '1');
+    const res = await request(app).post('/api/analyze').field('dummy', '1');
     expect(res.status).toBe(400);
     expect(res.body.error.message).toBe('No image provided');
   });
 
   it('returns 200 and tags when image file is provided (mock)', async () => {
-    const buf = Buffer.from([0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A]); // PNG header
+    const buf = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]); // PNG header
     const res = await request(app)
       .post('/api/analyze')
       .attach('image', buf, { filename: 'fake.png', contentType: 'image/png' });
