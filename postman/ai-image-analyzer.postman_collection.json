@@ -1,0 +1,45 @@
+{
+    "info": {
+      "name": "AI Image Analyzer",
+      "_postman_id": "0f1c0a2b-aaaa-bbbb-cccc-ddddeeefff11",
+      "description": "Endpoints: analyze (multipart). Includes success and error cases.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Analyze - success (multipart)",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "url": { "raw": "{{baseUrl}}/api/analyze", "host": ["{{baseUrl}}"], "path": ["api","analyze"] },
+          "body": {
+            "mode": "formdata",
+            "formdata": [
+              { "key": "image", "type": "file", "src": "" }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Analyze - no file (400)",
+        "request": {
+          "method": "POST",
+          "url": { "raw": "{{baseUrl}}/api/analyze", "host": ["{{baseUrl}}"], "path": ["api","analyze"] },
+          "body": { "mode": "formdata", "formdata": [ { "key": "dummy", "value": "1", "type": "text" } ] }
+        }
+      },
+      {
+        "name": "Analyze - invalid MIME (400)",
+        "request": {
+          "method": "POST",
+          "url": { "raw": "{{baseUrl}}/api/analyze", "host": ["{{baseUrl}}"], "path": ["api","analyze"] },
+          "body": { "mode": "formdata", "formdata": [ { "key": "image", "type": "file", "src": "" } ] },
+          "description": "Attach a non-image file renamed as .jpg to see 400."
+        }
+      }
+    ],
+    "variable": [
+      { "key": "baseUrl", "value": "http://localhost:4000" }
+    ]
+  }
+          
