@@ -1,0 +1,29 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - PORT=4000
+      - MAX_FILE_MB=10
+      - USE_GOOGLE_VISION=${USE_GOOGLE_VISION:-false}
+      # Para usar Vision real, descomentar las dos líneas siguientes:
+      - GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/gcp-sa.json
+    # Para Vision real, montar la key (descomentar):
+    volumes:
+      - ./keys/gcp-sa.json:/run/secrets/gcp-sa.json:ro
+    networks: [appnet]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks: [appnet]
+
+networks:
+  appnet:
+    driver: bridge
