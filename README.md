@@ -1,95 +1,174 @@
-## Google Vision (Real Mode)
+# AI Image Analyzer
 
-By default the API uses a Mock Vision service (no external calls).  
-To enable Google Vision:
-
-1. Enable Vision API in your GCP project and create a Service Account with at least **Cloud Vision API User**.
-2. Download the JSON key and place it under `./keys/gcp-sa.json` .
-3. Set environment variables:
-   - In `backend/.env`:
-     ```
-     USE_GOOGLE_VISION=true
-     PORT=4000
-     MAX_FILE_MB=10
-     ```
-   - Point Google SDK to your key:
-     - **Windows (PowerShell)**:
-       ```powershell
-       setx GOOGLE_APPLICATION_CREDENTIALS "C:\abs\path\ai-image-analyzer\keys\gcp-sa.json"
-       ```
-       (Restart your terminal or set it for the current session:
-       ` $env:GOOGLE_APPLICATION_CREDENTIALS="C:\abs\path\ai-image-analyzer\keys\gcp-sa.json" `)
-4. Start the server: `npm run dev`.
-5. The API contract remains the same: `POST /api/analyze` expects:
-   ```json
-   { "imageBase64": "<base64 of an image>" }
-   ```
-
-## Frontend (React + Vite + TypeScript)
-
-### 1. Environment setup
-Copy the example env file and set your backend API URL:
-
-```bash
-cp frontend/.env.example frontend/.env
-````
-
-Edit `.env` and set:
-
-```
-VITE_API_URL=http://localhost:4000
-```
-
-(or your deployed backend URL)
+Upload an image and let our AI generate descriptive tags.  
+Built with **Node.js/Express + TypeScript** (backend), **React + Vite + Bootstrap** (frontend), and integrates **Google Cloud Vision API**.
 
 ---
 
-### 2. Development
+## Features
+- **Backend**
+  - REST API with Express + TypeScript.
+  - Image analysis via Google Vision API (toggle with env flag).
+  - Mock mode for testing without GCP.
+  - Input validation (size, MIME type).
+  - Rate limiting on `/api/analyze`.
+  - Jest unit + E2E tests.
+- **Frontend**
+  - Responsive landing page (hero + uploader card).
+  - Drag & drop uploader with preview.
+  - Tag chips with confidence badges.
+  - Simulated progress bar while analyzing.
+  - Error messages.
+- **Tooling**
+  - ESLint + Prettier setup.
+  - GitHub Actions (CI for backend tests, frontend lint/build).
+  - Postman collection for API endpoints.
+- **Docker**
+  - Docker (frontend served by Nginx, proxying `/api` to backend).
 
-Run the frontend in dev mode:
+---
+
+## 🚀 Getting Started
+
+### 1. Clone & install
+```bash
+git clone https://github.com/Brenda-cbp/ai-image-analyzer
+cd ai-image-analyzer
+````
+
+Backend:
+
+```bash
+cd backend
+npm install
+```
+
+Frontend:
 
 ```bash
 cd frontend
 npm install
+```
+
+### 2. Environment variables
+
+Create `backend/.env` with:
+
+```env
+PORT=4000
+MAX_FILE_MB=10
+USE_GOOGLE_VISION=false   # set true to use GCP Vision
+GOOGLE_APPLICATION_CREDENTIALS=./keys/gcp-sa.json
+```
+
+### 3. Run locally
+
+Backend:
+
+```bash
+cd backend
 npm run dev
 ```
 
-The app will open at: [http://localhost:5173](http://localhost:5173)
+Frontend:
+
+```bash
+cd frontend
+npm run dev
+```
+
+* API: [http://localhost:4000/api/analyze](http://localhost:4000/api/analyze)
+* Frontend: [http://localhost:5173](http://localhost:5173)
 
 ---
 
-### 3. Type checking
+## Testing
 
-To run full TypeScript type checks (beyond what Vite/esbuild does):
+Backend tests:
 
 ```bash
-npm run type-check
+cd backend
+npm test
 ```
 
-(Shortcut for `tsc --noEmit`)
+* Unit tests for Vision service (mock).
+* E2E tests for `/api/analyze`.
+
+Lint & format:
+
+```bash
+npm run lint
+npm run format
+```
 
 ---
 
-### 4. Build for production
+## Postman Collection
 
-To generate an optimized build:
+Import `postman/ai-image-analyzer.postman_collection.json` and set:
+
+* `baseUrl = http://localhost:4000`
+
+Included requests:
+
+* Analyze success (multipart with image).
+* Analyze no file (400).
+* Analyze invalid MIME (400).
+
+---
+## Docker 
+
+Build & run:
 
 ```bash
-npm run build
+docker compose up --build
 ```
 
-Preview the built app:
+* Frontend served at [http://localhost:8080](http://localhost:8080)
+* Backend proxied under `/api`
 
-```bash
-npm run preview
-```
+Use GCP Vision:
 
-This will serve the production build at [http://localhost:4173](http://localhost:4173)
+1. Put your service account JSON in `./keys/gcp-sa.json`
+2. Uncomment volume + env in `docker-compose.yml`
+3. Run:
 
-### Postman
-Import `postman/ai-image-analyzer.postman_collection.json` and set `baseUrl` to your backend (default: http://localhost:4000). Use the "success" request and attach an image file.
+   ```bash
+   USE_GOOGLE_VISION=true docker compose up --build
+   ```
 
+---
+
+## 🛡️ CI / CD
+
+GitHub Actions run on every push / PR:
+
+* **Backend CI**: lint + tests.
+* **Frontend CI**: lint + typecheck + build.
+
+### Badges:
 
 ![Backend CI](https://github.com/Brenda-cbp/ai-image-analyzer/actions/workflows/backend.yml/badge.svg)
 
 ![Frontend CI](https://github.com/Brenda-cbp/ai-image-analyzer/actions/workflows/frontend.yml/badge.svg)
+---
+
+## 📂 Project Structure
+
+```
+.
+├── backend/              # Express + TS API
+│   ├── src/
+│   ├── __tests__/        # Jest tests
+│   └── ...
+├── frontend/             # React + Vite app
+│   ├── src/components/
+│   ├── src/lib/api.ts    # API helper
+│   └── ...
+├── postman/              # Postman collection
+├── docker-compose.yml
+└── README.md
+```
+
+---
+Enjoy :D
