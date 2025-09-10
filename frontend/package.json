@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview", 
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,json,md,css}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,json,md,css}\"",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^8.43.0",
