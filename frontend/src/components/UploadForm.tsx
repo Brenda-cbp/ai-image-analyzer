@@ -50,8 +50,12 @@ export default function UploadForm() {
       const res = await analyzeImage(file);
       setProgress(100);
       setTags(res.tags);
-    } catch (e: any) {
-      setError(e?.message ?? 'Unexpected error');
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("Unexpected error");
+      }
     } finally {
       setLoading(false);
       setTimeout(() => setProgress(0), 400);
