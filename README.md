@@ -88,3 +88,8 @@ This will serve the production build at [http://localhost:4173](http://localhost
 
 ### Postman
 Import `postman/ai-image-analyzer.postman_collection.json` and set `baseUrl` to your backend (default: http://localhost:4000). Use the "success" request and attach an image file.
+
+
+![Backend CI](https://github.com/Brenda-cbp/ai-image-analyzer/actions/workflows/backend.yml/badge.svg)
+
+![Frontend CI](https://github.com/Brenda-cbp/ai-image-analyzer/actions/workflows/frontend.yml/badge.svg)
