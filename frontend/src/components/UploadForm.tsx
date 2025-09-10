@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { analyzeImage, type Tag } from "../lib/api";
+import { useRef, useState, useEffect } from 'react';
+import { analyzeImage, type Tag } from '../lib/api';
 
 export default function UploadForm() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -9,11 +9,20 @@ export default function UploadForm() {
   const [tags, setTags] = useState<Tag[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  const accept = "image/png,image/jpeg,image/webp,image/jpg";
+  const accept = 'image/png,image/jpeg,image/webp,image/jpg';
+
+  useEffect(() => {
+    if (!loading) return;
+    setProgress(8);
+    const id = setInterval(() => setProgress((p) => Math.min(95, p + Math.random() * 15)), 250);
+    return () => clearInterval(id);
+  }, [loading]);
 
   const onFile = (f: File | null) => {
-    setTags(null); setError(null);
+    setTags(null);
+    setError(null);
     if (preview) URL.revokeObjectURL(preview);
     setFile(f);
     setPreview(f ? URL.createObjectURL(f) : null);
@@ -24,34 +33,44 @@ export default function UploadForm() {
   };
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault(); setDragOver(false);
+    e.preventDefault();
+    setDragOver(false);
     const f = e.dataTransfer.files?.[0] || null;
     onFile(f);
   };
 
   const onAnalyze = async () => {
     if (!file) return;
-    setLoading(true); setError(null); setTags(null);
+    setLoading(true);
+    setError(null);
+    setTags(null);
+    setProgress(8);
+
     try {
       const res = await analyzeImage(file);
+      setProgress(100);
       setTags(res.tags);
     } catch (e: any) {
-      setError(e?.message ?? "Unexpected error");
+      setError(e?.message ?? 'Unexpected error');
     } finally {
       setLoading(false);
+      setTimeout(() => setProgress(0), 400);
     }
   };
 
   const clearFile = () => {
     onFile(null);
-    if (inputRef.current) inputRef.current.value = "";
+    if (inputRef.current) inputRef.current.value = '';
   };
 
   return (
     <div className="vstack gap-3">
       <div
-        className={`dropzone ${dragOver ? "drag" : ""}`}
-        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+        className={`dropzone ${dragOver ? 'drag' : ''}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
       >
@@ -73,16 +92,42 @@ export default function UploadForm() {
       </div>
 
       <div className="d-flex gap-2">
-        <button type="button" className="btn btn-primary" onClick={onAnalyze} disabled={!file || loading}>
-          {loading ? "Analyzing…" : "Analyze"}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={onAnalyze}
+          disabled={!file || loading}
+        >
+          {loading ? 'Analyzing…' : 'Analyze'}
         </button>
-        <button type="button" className="btn btn-outline-secondary" onClick={clearFile} disabled={!file && !preview}>
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={clearFile}
+          disabled={!file && !preview}
+        >
           Clear
         </button>
       </div>
 
-      {error && <div className="alert alert-danger" role="alert" aria-live="assertive">{error}</div>}
-
+      {error && (
+        <div className="alert alert-danger" role="alert" aria-live="assertive">
+          {error}
+        </div>
+      )}
+ {progress > 0 && (
+          <div
+            className="progress mt-3"
+            role="progressbar"
+            aria-valuenow={progress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <div className="progress-bar" style={{ width: `${progress}%` }}>
+              {Math.round(progress)}%
+            </div>
+          </div>
+        )}
       {preview && (
         <div className="row gy-3">
           <div className="col-12 col-md-6">
