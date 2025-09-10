@@ -1,25 +1,40 @@
-/* Hero look & feel */
-.hero-gradient{
-  background: radial-gradient(1200px 600px at 20% 10%, rgba(33,150,243,.15), transparent),
-              radial-gradient(1200px 600px at 100% 0%, rgba(255,193,7,.18), transparent);
+.section-gradient {
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(33, 150, 243, 0.15), transparent),
+    radial-gradient(1200px 600px at 100% 0%, rgba(255, 193, 7, 0.18), transparent),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.04) 0%, rgba(15, 23, 42, 0.02) 100%);
 }
-.hero-illu{ max-height: 360px; object-fit: contain }
-.hero-card{ border-radius: 1rem }
+
+/* Hero look & feel */
+.hero-illu {
+  max-height: 360px;
+  object-fit: contain;
+}
+.hero-card {
+  border-radius: 1rem;
+}
 
 /* Dropzone */
-.dropzone{
-  border: 2px dashed rgba(0,0,0,.15);
+.dropzone {
+  border: 2px dashed rgba(0, 0, 0, 0.15);
   border-radius: 12px;
   padding: 24px;
-  transition: .2s border-color, .2s background-color;
+  transition:
+    0.2s border-color,
+    0.2s background-color;
   background: #fff;
 }
-.dropzone.drag{
-  border-color: rgba(33,150,243,.6);
-  background: rgba(33,150,243,.05);
+.dropzone.drag {
+  border-color: rgba(33, 150, 243, 0.6);
+  background: rgba(33, 150, 243, 0.05);
 }
-.tag-chip{
-  display:inline-flex; align-items:center; gap:.5rem;
-  border-radius:999px; padding:.25rem .75rem;
-  background:#f1f3f5; margin:.25rem .25rem 0 0; font-weight:500;
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  background: #f1f3f5;
+  margin: 0.25rem 0.25rem 0 0;
+  font-weight: 500;
 }

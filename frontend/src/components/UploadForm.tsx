@@ -115,19 +115,19 @@ export default function UploadForm() {
           {error}
         </div>
       )}
- {progress > 0 && (
-          <div
-            className="progress mt-3"
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          >
-            <div className="progress-bar" style={{ width: `${progress}%` }}>
-              {Math.round(progress)}%
-            </div>
+      {progress > 0 && (
+        <div
+          className="progress mt-3"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div className="progress-bar" style={{ width: `${progress}%` }}>
+            {Math.round(progress)}%
           </div>
-        )}
+        </div>
+      )}
       {preview && (
         <div className="row gy-3">
           <div className="col-12 col-md-6">

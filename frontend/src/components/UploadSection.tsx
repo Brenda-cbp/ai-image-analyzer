@@ -1,8 +1,8 @@
-import UploadForm from "./UploadForm";
+import UploadForm from './UploadForm';
 
 export default function UploadSection() {
   return (
-    <section id="upload" className="py-5 bg-body-tertiary">
+    <section id="upload" className="py-5">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-xl-10">
@@ -13,7 +13,7 @@ export default function UploadSection() {
                 <UploadForm />
               </div>
             </div>
-            <p className="text-center text-secondary mt-3 mb-0" style={{fontSize: 12}}>
+            <p className="text-center text-secondary mt-3 mb-0" style={{ fontSize: 12 }}>
               Files are processed in-memory and not stored on the server.
             </p>
           </div>
